@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <title><?php echo $__env->yieldContent('title', 'Barangay Matina Pangi Information System'); ?></title>
+    <title><?php echo $__env->yieldContent('title', 'Barangay Matina Pangi Information and Calamity System'); ?></title>
     
     <!-- Google Fonts - Inter (Professional & Clean) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -295,19 +295,19 @@
             font-weight: 600;
         }
         
-        /* Toast Success Message - Clean Modern Design */
+        /* Toast Success Message - Light Green */
         .toast-success {
-            background-color: #FFFFFF !important;
-            border: 1px solid #d1fae5 !important;
+            background-color: #dcfce7 !important; /* light green */
+            border: 1px solid #a7f3d0 !important;
             border-radius: 8px !important;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
             min-width: 320px;
         }
         
         .toast-success .toast-header {
-            background-color: #FFFFFF !important;
+            background-color: #dcfce7 !important; /* light green */
             border-bottom: none !important;
-            color: #059669 !important;
+            color: #047857 !important; /* dark green text */
             font-weight: 600 !important;
             padding: 1rem 1rem 0.5rem 1rem !important;
         }
@@ -318,9 +318,9 @@
         }
         
         .toast-success .toast-body {
-            background-color: #FFFFFF !important;
-            color: #6B7280 !important;
-            font-weight: 400 !important;
+            background-color: #dcfce7 !important; /* light green */
+            color: #065f46 !important;
+            font-weight: 500 !important;
             font-size: 0.875rem !important;
             padding: 0.5rem 1rem 1rem 1rem !important;
         }
@@ -1517,7 +1517,7 @@
                             Barangay Matina Pangi
                         </div>
                         <div style="font-size: 0.7rem; color: #6b7280; line-height: 1;">
-                            Information System
+                            Information and Calamity System
                         </div>
                     </div>
                 </a>

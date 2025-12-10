@@ -12,3 +12,10 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+\n# Laravel runtime directories
+/storage
+/bootstrap/cache
+\n# Logs and compiled views
+*.log
+/storage/framework/views
+/storage/logs

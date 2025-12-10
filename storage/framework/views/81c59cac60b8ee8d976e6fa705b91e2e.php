@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Barangay Information System of Matina Pangi: A Focus on Health and Assistance Services with Resident Profiling and Monitoring</title>
+    <title>Login - Barangay Information and Calamity System of Matina Pangi: A Focus on Health and Assistance Services with Resident Profiling and Monitoring</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
@@ -272,7 +272,7 @@
                 <img src="<?php echo e(asset('logo.png')); ?>?v=<?php echo e(time()); ?>" alt="Barangay Logo">
             </div>
             <h4 class="mb-0 fw-bold">System Login</h4>
-            <p class="small mb-0 mt-2 opacity-90">Barangay Matina Pangi Information System</p>
+            <p class="small mb-0 mt-2 opacity-90">Barangay Matina Pangi Information and Calamity System</p>
         </div>
         
         <div class="login-body">

@@ -14,46 +14,18 @@
         .card-header .btn.btn-light i {
             color: #111 !important;
         }
-
-        .submission-card-header {
-            background: linear-gradient(135deg, #3f6d54 0%, #4A6F52 100%) !important;
-            color: #fff !important;
-            border: none !important;
-            border-radius: 14px 14px 0 0 !important;
-            padding: 0.75rem 1rem !important;
-        }
-
-        .submission-card-header h5 {
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: .5rem;
-            font-weight: 700;
-        }
-
-        .submission-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.18);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .submission-card-header .btn {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        }
     </style>
 @endpush
 
 @section('content')<div class="ds-page">
     <div class="page-header mb-3">
-        <div class="page-header__title"><i class="bi bi-file-earmark-text"></i> My Submissions</div>
-        <div class="page-header__meta"><span class="truncate">Your pending residents, households, and transfers</span>
+        <div class="d-flex flex-column">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-file-earmark-text"></i>
+                <span class="h2 fw-bold mb-0">My Submissions</span>
+            </div>
+            <div class="text-muted">Your pending residents, households, and transfers</div>
         </div>
-        <div class="page-header__spacer"></div>
-        <div class="page-header__actions"></div>
     </div>
 
     <form method="GET" action="{{ route('staff.submissions.index') }}" class="card mb-4">
@@ -104,13 +76,12 @@
 
     <!-- Pending Residents -->
     <div class="card mb-4">
-        <div class="card-header d-flex align-items-center justify-content-between submission-card-header">
-            <h5 class="mb-0"><span class="submission-icon"><i class="bi bi-person-plus"></i></span> Residents
-                ({{ $myResidents->total() }})</h5>
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h6 class="mb-0"><i class="bi bi-person-plus me-2"></i>Residents ({{ $myResidents->total() }})</h6>
             <div class="d-flex gap-2">
                 <a href="{{ route('staff.submissions.export', ['section' => 'residents', 'status' => $resStatus, 'from' => optional($from)->format('Y-m-d'), 'to' => optional($to)->format('Y-m-d')]) }}"
-                    class="btn btn-sm btn-light text-dark">
-                    <i class="bi bi-download text-black"></i> Export CSV
+                    class="btn btn-sm btn-light">
+                    <i class="bi bi-download"></i> Export CSV
                 </a>
             </div>
         </div>
@@ -161,15 +132,14 @@
 
     <!-- Pending Households -->
     <div class="card mb-4">
-        <div class="card-header d-flex align-items-center justify-content-between submission-card-header">
-            <h5 class="mb-0"><span class="submission-icon"><i class="bi bi-house-add"></i></span> Households
-                ({{ $myHouseholds->total() }})</h5>
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h6 class="mb-0"><i class="bi bi-house-add me-2"></i>Households ({{ $myHouseholds->total() }})</h6>
             <div class="d-flex gap-2">
-                <a href="{{ route('staff.households.index') }}" class="btn btn-sm btn-light text-dark"><i
-                        class="bi bi-house text-black"></i> Open Households</a>
+                <a href="{{ route('staff.households.index') }}" class="btn btn-sm btn-light"><i class="bi bi-house"></i>
+                    Open Households</a>
                 <a href="{{ route('staff.submissions.export', ['section' => 'households', 'status' => $hhStatus, 'from' => optional($from)->format('Y-m-d'), 'to' => optional($to)->format('Y-m-d')]) }}"
-                    class="btn btn-sm btn-light text-dark">
-                    <i class="bi bi-download text-black"></i> Export CSV
+                    class="btn btn-sm btn-light">
+                    <i class="bi bi-download"></i> Export CSV
                 </a>
             </div>
         </div>
@@ -213,15 +183,15 @@
 
     <!-- Transfer Requests -->
     <div class="card mb-4">
-        <div class="card-header d-flex align-items-center justify-content-between submission-card-header">
-            <h5 class="mb-0"><span class="submission-icon"><i class="bi bi-arrow-left-right"></i></span> Transfer
-                Requests ({{ $myTransfers->total() }})</h5>
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h6 class="mb-0"><i class="bi bi-arrow-left-right me-2"></i>Transfer Requests ({{ $myTransfers->total() }})
+            </h6>
             <div class="d-flex gap-2">
                 <a href="{{ auth()->user()->isSecretary() ? route('resident-transfers.create') : route('staff.resident-transfers.create') }}"
-                    class="btn btn-sm btn-light text-dark"><i class="bi bi-plus-lg text-black"></i> Request Transfer</a>
+                    class="btn btn-sm btn-light"><i class="bi bi-plus-lg"></i> Request Transfer</a>
                 <a href="{{ route('staff.submissions.export', ['section' => 'transfers', 'status' => $trStatus, 'from' => optional($from)->format('Y-m-d'), 'to' => optional($to)->format('Y-m-d')]) }}"
-                    class="btn btn-sm btn-light text-dark">
-                    <i class="bi bi-download text-black"></i> Export CSV
+                    class="btn btn-sm btn-light">
+                    <i class="bi bi-download"></i> Export CSV
                 </a>
             </div>
         </div>

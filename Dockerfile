@@ -14,29 +14,16 @@ RUN a2enmod rewrite
 
 # Set proper DocumentRoot
 RUN sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#g' /etc/apache2/sites-available/000-default.conf \
- && sed -i 's#<Directory /var/www/>#<Directory /var/www/html/public/>#g' /etc/apache2/apache2.conf
+ && sed -i 's#<Directory /var/www/>#<Directory /var/www/html/public/>#g' /etc/apache2/apache2.conf \
+ && sed -ri 's/^Listen 80$/Listen 10000/g' /etc/apache2/ports.conf \
+ && sed -ri 's/<VirtualHost \*:80>/<VirtualHost *:10000>/g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri 's/AllowOverride\s+None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Tune Apache for high concurrency
+# Tune Apache to respect low DB connection limits
 RUN a2dismod mpm_event && a2enmod mpm_prefork \
- && printf "<IfModule mpm_prefork_module>\n\
-StartServers 10\n\
-MinSpareServers 10\n\
-MaxSpareServers 20\n\
-MaxRequestWorkers 150\n\
-MaxConnectionsPerChild 3000\n\
-</IfModule>\n" > /etc/apache2/conf-available/mpm-tune.conf \
- && printf "KeepAlive On\n\
-KeepAliveTimeout 5\n\
-MaxKeepAliveRequests 100\n" > /etc/apache2/conf-available/keepalive-tune.conf \
- && a2enconf mpm-tune keepalive-tune \
- && echo "LogLevel warn" >> /etc/apache2/apache2.conf
-
-# Add OPcache for performance
-RUN docker-php-ext-install opcache \
- && echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
- && echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache.ini \
- && echo "opcache.max_accelerated_files=10000" >> /usr/local/etc/php/conf.d/opcache.ini
+ && printf "<IfModule mpm_prefork_module>\nStartServers 2\nMinSpareServers 2\nMaxSpareServers 2\nMaxRequestWorkers 2\nMaxConnectionsPerChild 1000\n</IfModule>\n" > /etc/apache2/conf-available/mpm-tune.conf \
+ && printf "KeepAlive On\nMaxKeepAliveRequests 50\nKeepAliveTimeout 2\n" > /etc/apache2/conf-available/keepalive-tune.conf \
+ && a2enconf mpm-tune keepalive-tune
 
 # Copy application
 COPY . /var/www/html
@@ -62,8 +49,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Expose port (use correct Render port if needed)
-EXPOSE 1000
+# Expose port
+EXPOSE 10000
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Start Apache with DB migrations
+CMD ["bash", "-lc", "php artisan migrate --force && apache2-foreground"]
