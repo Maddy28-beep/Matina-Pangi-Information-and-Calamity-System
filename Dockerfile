@@ -17,11 +17,20 @@ RUN sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#g' /e
  && sed -i 's#<Directory /var/www/>#<Directory /var/www/html/public/>#g' /etc/apache2/apache2.conf
 RUN sed -ri 's/AllowOverride\s+None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Tune Apache to respect low DB connection limits
+# Tune Apache for Render
 RUN a2dismod mpm_event && a2enmod mpm_prefork \
- && printf "<IfModule mpm_prefork_module>\nStartServers 2\nMinSpareServers 2\nMaxSpareServers 2\nMaxRequestWorkers 2\nMaxConnectionsPerChild 1000\n</IfModule>\n" > /etc/apache2/conf-available/mpm-tune.conf \
- && printf "KeepAlive On\nMaxKeepAliveRequests 50\nKeepAliveTimeout 2\n" > /etc/apache2/conf-available/keepalive-tune.conf \
- && a2enconf mpm-tune keepalive-tune
+ && printf "<IfModule mpm_prefork_module>\n\
+StartServers 10\n\
+MinSpareServers 10\n\
+MaxSpareServers 20\n\
+MaxRequestWorkers 150\n\
+MaxConnectionsPerChild 3000\n\
+</IfModule>\n" > /etc/apache2/conf-available/mpm-tune.conf \
+ && printf \"KeepAlive On\n\
+MaxKeepAliveRequests 200\n\
+KeepAliveTimeout 2\n\" > /etc/apache2/conf-available/keepalive-tune.conf \
+ && a2enconf mpm-tune keepalive-tune \
+ && echo \"LogLevel warn\" >> /etc/apache2/apache2.conf
 
 # Copy application
 COPY . /var/www/html
