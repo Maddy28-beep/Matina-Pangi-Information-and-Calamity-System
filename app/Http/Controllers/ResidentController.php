@@ -237,15 +237,19 @@ class ResidentController extends Controller
 
         $first = trim((string) $request->input('first_name', ''));
         $last = trim((string) $request->input('last_name', ''));
+        $birthdate = $request->input('birthdate');
 
         if ($first === '' || $last === '') {
             return response()->json(['exists' => false]);
         }
 
         $normalized = strtolower($first.' '.$last);
-        $match = Resident::query()
-            ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [$normalized])
-            ->first();
+        $query = Resident::query()
+            ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [$normalized]);
+        if ($birthdate) {
+            $query->whereDate('birthdate', '=', $birthdate);
+        }
+        $match = $query->first();
 
         if ($match) {
             return response()->json([
@@ -253,6 +257,7 @@ class ResidentController extends Controller
                 'id' => $match->id,
                 'resident_id' => $match->resident_id,
                 'full_name' => $match->first_name.' '.($match->middle_name ? $match->middle_name.' ' : '').$match->last_name,
+                'birthdate' => $match->birthdate ? (string) $match->birthdate : null,
                 'url' => route('residents.show', $match->id),
             ]);
         }

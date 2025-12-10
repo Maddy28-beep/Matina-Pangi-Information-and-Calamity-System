@@ -220,6 +220,7 @@ class HouseholdController extends Controller
         ]);
         $headDuplicate = Resident::query()
             ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [strtolower(trim($validated['head']['first_name']).' '.trim($validated['head']['last_name']))])
+            ->whereDate('birthdate', '=', $validated['head']['birthdate'])
             ->exists();
 
         if ($headDuplicate) {
@@ -233,12 +234,13 @@ class HouseholdController extends Controller
             foreach ($validated['members'] as $member) {
                 $memberExists = Resident::query()
                     ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [strtolower(trim($member['first_name']).' '.trim($member['last_name']))])
+                    ->whereDate('birthdate', '=', $member['birthdate'])
                     ->exists();
 
                 if ($memberExists) {
                     $label = trim($member['first_name'].' '.($member['middle_name'] ?? '').' '.$member['last_name'].' '.($member['suffix'] ?? ''));
 
-                    return back()->withInput()->withErrors(['error' => "Resident '{$label}' already exists in the system."]);
+                    return back()->withInput()->withErrors(['error' => "Resident '{$label}' with birthdate {$member['birthdate']} already exists in the system."]);
                 }
             }
         }
@@ -678,12 +680,13 @@ class HouseholdController extends Controller
 
         $duplicate = Resident::query()
             ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [strtolower(trim($validated['first_name']).' '.trim($validated['last_name']))])
+            ->whereDate('birthdate', '=', $validated['birthdate'])
             ->exists();
 
         if ($duplicate) {
             $label = trim($validated['first_name'].' '.($validated['middle_name'] ?? '').' '.$validated['last_name'].' '.($validated['suffix'] ?? ''));
 
-            return back()->withInput()->withErrors(['error' => "Resident '{$label}' already exists in the system."]);
+            return back()->withInput()->withErrors(['error' => "Resident '{$label}' with birthdate {$validated['head']['birthdate']} already exists in the system."]);
         }
 
         // Calculate age from birthdate
