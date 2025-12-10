@@ -17,7 +17,7 @@ RUN sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#g' /e
  && sed -i 's#<Directory /var/www/>#<Directory /var/www/html/public/>#g' /etc/apache2/apache2.conf
 RUN sed -ri 's/AllowOverride\s+None/AllowOverride All/g' /etc/apache2/apache2.conf
 
-# Tune Apache for Render
+# Tune Apache for high concurrency
 RUN a2dismod mpm_event && a2enmod mpm_prefork \
  && printf "<IfModule mpm_prefork_module>\n\
 StartServers 10\n\
@@ -26,11 +26,17 @@ MaxSpareServers 20\n\
 MaxRequestWorkers 150\n\
 MaxConnectionsPerChild 3000\n\
 </IfModule>\n" > /etc/apache2/conf-available/mpm-tune.conf \
- && printf \"KeepAlive On\n\
-MaxKeepAliveRequests 200\n\
-KeepAliveTimeout 2\n\" > /etc/apache2/conf-available/keepalive-tune.conf \
+ && printf "KeepAlive On\n\
+KeepAliveTimeout 5\n\
+MaxKeepAliveRequests 100\n" > /etc/apache2/conf-available/keepalive-tune.conf \
  && a2enconf mpm-tune keepalive-tune \
- && echo \"LogLevel warn\" >> /etc/apache2/apache2.conf
+ && echo "LogLevel warn" >> /etc/apache2/apache2.conf
+
+# Add OPcache for performance
+RUN docker-php-ext-install opcache \
+ && echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
+ && echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache.ini \
+ && echo "opcache.max_accelerated_files=10000" >> /usr/local/etc/php/conf.d/opcache.ini
 
 # Copy application
 COPY . /var/www/html
@@ -56,7 +62,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Expose port
+# Expose port (use correct Render port if needed)
 EXPOSE 1000
 
 # Start Apache
