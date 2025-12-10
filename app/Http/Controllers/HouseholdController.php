@@ -112,8 +112,18 @@ class HouseholdController extends Controller
         $households = Household::with('head')->get(); // For parent household selection
 
         // Get distinct puroks and addresses for dropdowns
-        $puroks = ['Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5',
-            'Purok 6', 'Purok 7', 'Purok 8', 'Purok 9', 'Purok 10'];
+        $puroks = [
+            'Purok 1',
+            'Purok 2',
+            'Purok 3',
+            'Purok 4',
+            'Purok 5',
+            'Purok 6',
+            'Purok 7',
+            'Purok 8',
+            'Purok 9',
+            'Purok 10',
+        ];
 
         // Extract unique street addresses (first part before comma)
         $addressPurokMap = Household::approved()
@@ -208,6 +218,36 @@ class HouseholdController extends Controller
             'members.*.medical_conditions' => 'nullable|string',
             'members.*.remarks' => 'nullable|string',
         ]);
+        $headDuplicate = Resident::query()
+            ->whereRaw('LOWER(first_name) = ?', [strtolower(trim($validated['head']['first_name']))])
+            ->whereRaw('LOWER(last_name) = ?', [strtolower(trim($validated['head']['last_name']))])
+            ->whereRaw('LOWER(COALESCE(middle_name, "")) = ?', [strtolower(trim($validated['head']['middle_name'] ?? ''))])
+            ->whereRaw('LOWER(COALESCE(suffix, "")) = ?', [strtolower(trim($validated['head']['suffix'] ?? ''))])
+            ->exists();
+
+        if ($headDuplicate) {
+            $n = $validated['head'];
+            $label = trim($n['first_name'].' '.($n['middle_name'] ?? '').' '.$n['last_name'].' '.($n['suffix'] ?? ''));
+
+            return back()->withInput()->withErrors(['error' => "Resident '{$label}' already exists in the system."]);
+        }
+
+        if (isset($validated['members']) && count($validated['members']) > 0) {
+            foreach ($validated['members'] as $member) {
+                $memberExists = Resident::query()
+                    ->whereRaw('LOWER(first_name) = ?', [strtolower(trim($member['first_name']))])
+                    ->whereRaw('LOWER(last_name) = ?', [strtolower(trim($member['last_name']))])
+                    ->whereRaw('LOWER(COALESCE(middle_name, "")) = ?', [strtolower(trim($member['middle_name'] ?? ''))])
+                    ->whereRaw('LOWER(COALESCE(suffix, "")) = ?', [strtolower(trim($member['suffix'] ?? ''))])
+                    ->exists();
+
+                if ($memberExists) {
+                    $label = trim($member['first_name'].' '.($member['middle_name'] ?? '').' '.$member['last_name'].' '.($member['suffix'] ?? ''));
+
+                    return back()->withInput()->withErrors(['error' => "Resident '{$label}' already exists in the system."]);
+                }
+            }
+        }
 
         DB::beginTransaction();
         try {
@@ -424,9 +464,12 @@ class HouseholdController extends Controller
         // Get extended families (co-heads and their members)
         $extendedFamilies = $household->subFamilies()
             ->where('is_primary_family', false)
-            ->with(['subHead', 'members' => function ($query) {
-                $query->withTrashed()->orderBy('is_co_head', 'desc')->orderBy('age', 'desc');
-            }])
+            ->with([
+                'subHead',
+                'members' => function ($query) {
+                    $query->withTrashed()->orderBy('is_co_head', 'desc')->orderBy('age', 'desc');
+                },
+            ])
             ->get();
 
         // Calculate statistics for each family group
@@ -469,8 +512,18 @@ class HouseholdController extends Controller
         $households = Household::where('id', '!=', $household->id)->with('head')->get();
 
         // Get distinct puroks and addresses for dropdowns
-        $puroks = ['Purok 1', 'Purok 2', 'Purok 3', 'Purok 4', 'Purok 5',
-            'Purok 6', 'Purok 7', 'Purok 8', 'Purok 9', 'Purok 10'];
+        $puroks = [
+            'Purok 1',
+            'Purok 2',
+            'Purok 3',
+            'Purok 4',
+            'Purok 5',
+            'Purok 6',
+            'Purok 7',
+            'Purok 8',
+            'Purok 9',
+            'Purok 10',
+        ];
 
         // Extract unique street addresses (first part before comma)
         $addresses = Household::approved()
@@ -628,6 +681,19 @@ class HouseholdController extends Controller
             'medical_conditions' => 'nullable|string',
             'remarks' => 'nullable|string',
         ]);
+
+        $duplicate = Resident::query()
+            ->whereRaw('LOWER(first_name) = ?', [strtolower(trim($validated['first_name']))])
+            ->whereRaw('LOWER(last_name) = ?', [strtolower(trim($validated['last_name']))])
+            ->whereRaw('LOWER(COALESCE(middle_name, "")) = ?', [strtolower(trim($validated['middle_name'] ?? ''))])
+            ->whereRaw('LOWER(COALESCE(suffix, "")) = ?', [strtolower(trim($validated['suffix'] ?? ''))])
+            ->exists();
+
+        if ($duplicate) {
+            $label = trim($validated['first_name'].' '.($validated['middle_name'] ?? '').' '.$validated['last_name'].' '.($validated['suffix'] ?? ''));
+
+            return back()->withInput()->withErrors(['error' => "Resident '{$label}' already exists in the system."]);
+        }
 
         // Calculate age from birthdate
         $birthdate = Carbon::parse($validated['birthdate']);
