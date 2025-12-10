@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+  <defs>
+    <style>
+      .table { fill:#ffffff; stroke:#2f6b45; stroke-width:2; }
+      .header { fill:#2f6b45; }
+      .htext { font: 700 16px sans-serif; fill:#ffffff; }
+      .celltext { font: 400 14px sans-serif; fill:#111827; }
+      .title { font: 700 22px sans-serif; fill:#1e3a8a; }
+    </style>
+  </defs>
+
+  <text class="title" x="60" y="60">System Test Cases Overview</text>
+
+  <rect class="table" x="50" y="90" width="1500" height="820" rx="12" ry="12"/>
+
+  <rect class="header" x="50" y="90" width="1500" height="50" rx="12" ry="12"/>
+
+  <line x1="270" y1="90" x2="270" y2="910" stroke="#2f6b45" stroke-width="2"/>
+  <line x1="490" y1="90" x2="490" y2="910" stroke="#2f6b45" stroke-width="2"/>
+  <line x1="710" y1="90" x2="710" y2="910" stroke="#2f6b45" stroke-width="2"/>
+  <line x1="930" y1="90" x2="930" y2="910" stroke="#2f6b45" stroke-width="2"/>
+  <line x1="1150" y1="90" x2="1150" y2="910" stroke="#2f6b45" stroke-width="2"/>
+  <line x1="1370" y1="90" x2="1370" y2="910" stroke="#2f6b45" stroke-width="2"/>
+
+  <line x1="50" y1="150" x2="1550" y2="150" stroke="#2f6b45" stroke-width="2"/>
+  <line x1="50" y1="210" x2="1550" y2="210" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="270" x2="1550" y2="270" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="330" x2="1550" y2="330" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="390" x2="1550" y2="390" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="450" x2="1550" y2="450" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="510" x2="1550" y2="510" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="570" x2="1550" y2="570" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="630" x2="1550" y2="630" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="690" x2="1550" y2="690" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="750" x2="1550" y2="750" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="810" x2="1550" y2="810" stroke="#e5e7eb" stroke-width="1"/>
+  <line x1="50" y1="870" x2="1550" y2="870" stroke="#2f6b45" stroke-width="2"/>
+
+  <text class="htext" x="60" y="122">User Authentication</text>
+  <text class="htext" x="285" y="122">Role Based Access</text>
+  <text class="htext" x="505" y="122">Dashboard Module</text>
+  <text class="htext" x="725" y="122">Resident Profiling Module</text>
+  <text class="htext" x="945" y="122">Calamity Management Module</text>
+  <text class="htext" x="1165" y="122">CRUD Operations</text>
+  <text class="htext" x="1385" y="122">System Validation</text>
+
+  <text class="celltext" x="60" y="186">Valid login success</text>
+  <text class="celltext" x="285" y="186">Secretary role</text>
+  <text class="celltext" x="505" y="186">Secretary dashboard loads</text>
+  <text class="celltext" x="725" y="186">Register household shortcut</text>
+  <text class="celltext" x="945" y="186">Not applicable</text>
+  <text class="celltext" x="1165" y="186">Read access OK</text>
+  <text class="celltext" x="1385" y="186">Session established</text>
+
+  <text class="celltext" x="60" y="246">Invalid login error</text>
+  <text class="celltext" x="285" y="246">No access</text>
+  <text class="celltext" x="505" y="246">Stay on login</text>
+  <text class="celltext" x="725" y="246">Hidden</text>
+  <text class="celltext" x="945" y="246">Hidden</text>
+  <text class="celltext" x="1165" y="246">Blocked</text>
+  <text class="celltext" x="1385" y="246">Error shown</text>
+
+  <text class="celltext" x="60" y="306">Valid login</text>
+  <text class="celltext" x="285" y="306">Calamity Head role</text>
+  <text class="celltext" x="505" y="306">Calamity dashboard loads</text>
+  <text class="celltext" x="725" y="306">Hidden</text>
+  <text class="celltext" x="945" y="306">Recent incidents visible</text>
+  <text class="celltext" x="1165" y="306">Incident create/edit</text>
+  <text class="celltext" x="1385" y="306">Sidebar highlight fixed</text>
+
+  <text class="celltext" x="60" y="366">Valid login</text>
+  <text class="celltext" x="285" y="366">Staff role</text>
+  <text class="celltext" x="505" y="366">Staff pages</text>
+  <text class="celltext" x="725" y="366">Households create</text>
+  <text class="celltext" x="945" y="366">403 restricted</text>
+  <text class="celltext" x="1165" y="366">My submissions</text>
+  <text class="celltext" x="1385" y="366">Access enforced</text>
+
+  <text class="celltext" x="60" y="426">Logout</text>
+  <text class="celltext" x="285" y="426">Role cleared</text>
+  <text class="celltext" x="505" y="426">Redirect landing</text>
+  <text class="celltext" x="725" y="426">Blocked</text>
+  <text class="celltext" x="945" y="426">Blocked</text>
+  <text class="celltext" x="1165" y="426">Blocked</text>
+  <text class="celltext" x="1385" y="426">Session destroyed</text>
+
+  <text class="celltext" x="60" y="486">Session expire</text>
+  <text class="celltext" x="285" y="486">Re-auth required</text>
+  <text class="celltext" x="505" y="486">Redirect login</text>
+  <text class="celltext" x="725" y="486">—</text>
+  <text class="celltext" x="945" y="486">—</text>
+  <text class="celltext" x="1165" y="486">—</text>
+  <text class="celltext" x="1385" y="486">Idle timeout</text>
+
+  <text class="celltext" x="60" y="546">—</text>
+  <text class="celltext" x="285" y="546">Secretary rights</text>
+  <text class="celltext" x="505" y="546">Quick actions working</text>
+  <text class="celltext" x="725" y="546">Add resident flow</text>
+  <text class="celltext" x="945" y="546">—</text>
+  <text class="celltext" x="1165" y="546">Create household/resident</text>
+  <text class="celltext" x="1385" y="546">Form validation OK</text>
+
+  <text class="celltext" x="60" y="606">—</text>
+  <text class="celltext" x="285" y="606">Calamity Head rights</text>
+  <text class="celltext" x="505" y="606">Charts render</text>
+  <text class="celltext" x="725" y="606">—</text>
+  <text class="celltext" x="945" y="606">Filter/export/import/authz</text>
+  <text class="celltext" x="1165" y="606">Incident CRUD</text>
+  <text class="celltext" x="1385" y="606">Severity/date validation</text>
+
+  <text class="celltext" x="60" y="666">—</text>
+  <text class="celltext" x="285" y="666">Staff restrictions</text>
+  <text class="celltext" x="505" y="666">Submissions list</text>
+  <text class="celltext" x="725" y="666">Needs approval</text>
+  <text class="celltext" x="945" y="666">Forbidden 403</text>
+  <text class="celltext" x="1165" y="666">No delete perms</text>
+  <text class="celltext" x="1385" y="666">Error messages</text>
+
+  <text class="celltext" x="60" y="726">—</text>
+  <text class="celltext" x="285" y="726">Highlight rules</text>
+  <text class="celltext" x="505" y="726">Index not active on dashboard</text>
+  <text class="celltext" x="725" y="726">—</text>
+  <text class="celltext" x="945" y="726">Dashboard excludes incidents active</text>
+  <text class="celltext" x="1165" y="726">—</text>
+  <text class="celltext" x="1385" y="726">Consistent UI state</text>
+
+  <text class="celltext" x="60" y="786">—</text>
+  <text class="celltext" x="285" y="786">Access regression</text>
+  <text class="celltext" x="505" y="786">Cards render</text>
+  <text class="celltext" x="725" y="786">Census links work</text>
+  <text class="celltext" x="945" y="786">Reports open</text>
+  <text class="celltext" x="1165" y="786">Edit/save works</text>
+  <text class="celltext" x="1385" y="786">No console errors</text>
+
+  <text class="celltext" x="60" y="846">—</text>
+  <text class="celltext" x="285" y="846">Role switch safety</text>
+  <text class="celltext" x="505" y="846">Redirect correct</text>
+  <text class="celltext" x="725" y="846">Data intact</text>
+  <text class="celltext" x="945" y="846">Permissions respected</text>
+  <text class="celltext" x="1165" y="846">CRUD constraints</text>
+  <text class="celltext" x="1385" y="846">Audit logs present</text>
+</svg>

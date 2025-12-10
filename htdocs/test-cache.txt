@@ -1,0 +1,3 @@
+CSS Updated at: {{ date('Y-m-d H:i:s') }}
+If you see this, your server is working.
+Now clear your browser cache completely!

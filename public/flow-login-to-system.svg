@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+  <defs>
+    <style>
+      .box { fill:#ffffff; stroke:#2f6b45; stroke-width:2; rx:12; ry:12; }
+      .diamond { fill:#ffffff; stroke:#2f6b45; stroke-width:2; }
+      .circle { fill:#ffffff; stroke:#2f6b45; stroke-width:2; }
+      .title { font: 700 20px sans-serif; fill:#1e3a8a; }
+      .text { font: 400 16px sans-serif; fill:#111827; }
+      .small { font: 400 14px sans-serif; fill:#374151; }
+      .lane-title { font: 700 18px sans-serif; fill:#2f6b45; }
+      .lane { fill:#f6f8f7; stroke:#e5e7eb; stroke-width:1; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#2f6b45"/>
+    </marker>
+  </defs>
+
+  <rect class="lane" x="30" y="30" width="1540" height="1040"/>
+  <text class="title" x="50" y="60">System Flow: Login to Core Modules</text>
+  <text class="small" x="50" y="85">Covers authentication and post-login navigation by role with key actions</text>
+
+  <g>
+    <circle class="circle" cx="140" cy="150" r="40"/>
+    <text class="text" x="110" y="155">Start</text>
+  </g>
+
+  <g>
+    <rect class="box" x="240" y="110" width="260" height="80"/>
+    <text class="text" x="255" y="140">Open Login Page</text>
+    <text class="small" x="255" y="165">Enter email and password</text>
+  </g>
+
+  <g transform="translate(540,100)">
+    <polygon class="diamond" points="0,50 90,0 180,50 90,100"/>
+    <text class="text" x="40" y="55">Auth success?</text>
+  </g>
+
+  <g>
+    <rect class="box" x="770" y="60" width="240" height="80"/>
+    <text class="text" x="785" y="90">Show error</text>
+    <text class="small" x="785" y="115">Invalid credentials</text>
+  </g>
+
+  <g transform="translate(770,180)">
+    <rect class="box" x="0" y="0" width="240" height="80"/>
+    <text class="text" x="15" y="30">Retry login</text>
+    <text class="small" x="15" y="55">Stay on login page</text>
+  </g>
+
+  <g transform="translate(1050,100)">
+    <polygon class="diamond" points="0,50 110,0 220,50 110,100"/>
+    <text class="text" x="45" y="40">Role?</text>
+    <text class="small" x="30" y="65">Secretary / Calamity Head / Staff</text>
+  </g>
+
+  <g>
+    <rect class="box" x="300" y="300" width="360" height="280"/>
+    <text class="lane-title" x="320" y="330">Secretary Dashboard</text>
+    <text class="small" x="320" y="360">Landing: `dashboard`</text>
+    <text class="text" x="320" y="390">Residents and Households</text>
+    <text class="small" x="320" y="415">Register household, add resident, census</text>
+    <text class="text" x="320" y="445">Approvals</text>
+    <text class="small" x="320" y="470">Review pending submissions</text>
+    <text class="text" x="320" y="500">Announcements</text>
+    <text class="small" x="320" y="525">Publish barangay notices</text>
+    <text class="text" x="320" y="555">Certificates</text>
+    <text class="small" x="320" y="580">Issue official documents</text>
+  </g>
+
+  <g>
+    <rect class="box" x="720" y="300" width="360" height="360"/>
+    <text class="lane-title" x="740" y="330">Calamity Dashboard</text>
+    <text class="small" x="740" y="355">Landing: `calamities.dashboard`</text>
+    <text class="text" x="740" y="385">Recently Added Incidents</text>
+    <text class="small" x="740" y="410">Clickable rows to incident details</text>
+    <text class="text" x="740" y="440">Quick Actions</text>
+    <text class="small" x="740" y="465">Manage Incidents, Affected Households, Evacuation Centers</text>
+    <text class="small" x="740" y="490">Relief Distributions, Damage Assessments, Notifications, Reports</text>
+    <text class="text" x="740" y="520">Incidents Index</text>
+    <text class="small" x="740" y="545">Filter, search, paginate</text>
+    <text class="text" x="740" y="575">Incident Details</text>
+    <text class="small" x="740" y="600">View info, add affected households, export report</text>
+  </g>
+
+  <g>
+    <rect class="box" x="1140" y="300" width="360" height="300"/>
+    <text class="lane-title" x="1160" y="330">Staff Portal</text>
+    <text class="small" x="1160" y="355">Landing: staff-specific dashboard</text>
+    <text class="text" x="1160" y="385">Residents</text>
+    <text class="small" x="1160" y="410">View/edit allowed records</text>
+    <text class="text" x="1160" y="440">Households</text>
+    <text class="small" x="1160" y="465">Register households</text>
+    <text class="text" x="1160" y="495">My Submissions</text>
+    <text class="small" x="1160" y="520">Track submitted forms</text>
+  </g>
+
+  <g>
+    <rect class="box" x="300" y="680" width="1200" height="320"/>
+    <text class="lane-title" x="320" y="710">Key Test Cases</text>
+    <text class="text" x="320" y="740">TC-1 Valid Login Redirect</text>
+    <text class="small" x="320" y="765">Given valid credentials, user is redirected to role-appropriate landing page</text>
+    <text class="text" x="320" y="795">TC-2 Invalid Login Error</text>
+    <text class="small" x="320" y="820">Given invalid credentials, error message is shown and login form remains</text>
+    <text class="text" x="320" y="850">TC-3 Calamity Dashboard Visibility</text>
+    <text class="small" x="320" y="875">Recently Added Incidents table is visible; Quick Actions exclude Relief Inventory</text>
+    <text class="text" x="320" y="905">TC-4 Incidents Index Filtering</text>
+    <text class="small" x="320" y="930">Filtering by type/status/severity updates results and keeps query params</text>
+    <text class="text" x="320" y="960">TC-5 Incident Details Navigation</text>
+    <text class="small" x="320" y="985">Clicking a row opens the incident details page with correct data</text>
+  </g>
+
+  <line x1="180" y1="150" x2="240" y2="150" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="500" y1="150" x2="540" y2="150" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="720" y1="150" x2="770" y2="100" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="720" y1="150" x2="770" y2="220" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="940" y1="150" x2="1050" y2="150" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <line x1="1160" y1="200" x2="480" y2="300" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1160" y1="200" x2="900" y2="300" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1160" y1="200" x2="1280" y2="300" stroke="#2f6b45" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text class="small" x="590" y="90">No</text>
+  <text class="small" x="720" y="180">No</text>
+  <text class="small" x="995" y="90">Yes</text>
+
+  <g>
+    <rect class="box" x="50" y="980" width="300" height="70"/>
+    <text class="small" x="65" y="1005">Note</text>
+    <text class="small" x="65" y="1030">Sidebar highlights depend on route; `calamities.dashboard` excludes index highlight</text>
+  </g>
+</svg>

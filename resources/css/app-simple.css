@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
+body {
+  font-family: var(--font-inter);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins);
+  font-weight: 600;
+}
+
+/* Custom Classes */
+.bg-gradient-primary {
+  background: linear-gradient(to right, #3AB795, #7AE582);
+}
+
+.bg-gradient-primary-soft {
+  background: linear-gradient(to bottom right, #f0fdf9, #ffffff, #f0fdf9);
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #3AB795, #7AE582);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

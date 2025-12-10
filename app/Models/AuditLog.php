@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class AuditLog extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'action',
+        'model_type',
+        'model_id',
+        'description',
+        'old_values',
+        'new_values',
+        'ip_address',
+    ];
+
+    protected $casts = [
+        'old_values' => 'array',
+        'new_values' => 'array',
+    ];
+
+    /**
+     * Get the user who performed the action
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the model that was affected
+     */
+    public function model()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Log an action
+     */
+    public static function logAction($action, $modelType, $modelId, $description, $oldValues = null, $newValues = null)
+    {
+        return self::create([
+            'user_id' => auth()->id(),
+            'action' => $action,
+            'model_type' => $modelType,
+            'model_id' => $modelId,
+            'description' => $description,
+            'old_values' => $oldValues,
+            'new_values' => $newValues,
+            'ip_address' => request()->ip(),
+        ]);
+    }
+}
