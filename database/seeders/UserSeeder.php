@@ -14,45 +14,58 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Secretary account (full access)
-        if (! User::where('email', 'secretary@pangi.gov')->exists()) {
+        // Secretary account (create or update password)
+        $secretary = User::where('email', 'secretary@pangi.gov')->first();
+        if (!$secretary) {
             User::create([
                 'name' => 'Barangay Secretary',
                 'email' => 'secretary@pangi.gov',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => Hash::make('kwatrolangsir444'),
                 'role' => 'secretary',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
             $this->command->info('✓ Secretary account created');
         } else {
-            $this->command->warn('⚠ Secretary account already exists');
+            $secretary->update([
+                'password' => Hash::make('kwatrolangsir444'),
+                'role' => 'secretary',
+                'email_verified_at' => $secretary->email_verified_at ?? now(),
+            ]);
+            $this->command->info('✓ Secretary account password updated');
         }
 
-        if (! User::where('email', 'calamityhead@pangi.gov')->exists()) {
-            $roleCalHead = DB::getDriverName() === 'sqlite' ? 'staff' : 'calamity_head';
+        $roleCalHead = DB::getDriverName() === 'sqlite' ? 'staff' : 'calamity_head';
+        $calHead = User::where('email', 'calamityhead@pangi.gov')->first();
+        if (!$calHead) {
             User::create([
                 'name' => 'Calamity Head',
                 'email' => 'calamityhead@pangi.gov',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => Hash::make('kwatrolangsir444'),
                 'role' => $roleCalHead,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
             $this->command->info('✓ Calamity Head account created');
         } else {
-            $this->command->warn('⚠ Calamity Head account already exists');
+            $calHead->update([
+                'password' => Hash::make('kwatrolangsir444'),
+                'role' => $roleCalHead,
+                'email_verified_at' => $calHead->email_verified_at ?? now(),
+            ]);
+            $this->command->info('✓ Calamity Head account password updated');
         }
 
-        // Create Staff accounts (limited access)
-        if (! User::where('email', 'maria.santos@pangi.gov')->exists()) {
+        // Staff accounts (create or update password)
+        $maria = User::where('email', 'maria.santos@pangi.gov')->first();
+        if (!$maria) {
             User::create([
                 'name' => 'Maria Santos',
                 'email' => 'maria.santos@pangi.gov',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => Hash::make('kwatrolangsir444'),
                 'role' => 'staff',
                 'assigned_app' => 'profiling_only',
                 'created_at' => now(),
@@ -60,15 +73,22 @@ class UserSeeder extends Seeder
             ]);
             $this->command->info('✓ Staff account (Maria) created');
         } else {
-            $this->command->warn('⚠ Maria Santos account already exists');
+            $maria->update([
+                'password' => Hash::make('kwatrolangsir444'),
+                'role' => 'staff',
+                'assigned_app' => $maria->assigned_app ?? 'profiling_only',
+                'email_verified_at' => $maria->email_verified_at ?? now(),
+            ]);
+            $this->command->info('✓ Staff account (Maria) password updated');
         }
 
-        if (! User::where('email', 'juan.delacruz@pangi.gov')->exists()) {
+        $juan = User::where('email', 'juan.delacruz@pangi.gov')->first();
+        if (!$juan) {
             User::create([
                 'name' => 'Juan Dela Cruz',
                 'email' => 'juan.delacruz@pangi.gov',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'),
+                'password' => Hash::make('kwatrolangsir444'),
                 'role' => 'staff',
                 'assigned_app' => 'profiling_only',
                 'created_at' => now(),
@@ -76,7 +96,13 @@ class UserSeeder extends Seeder
             ]);
             $this->command->info('✓ Staff account (Juan) created');
         } else {
-            $this->command->warn('⚠ Juan Dela Cruz account already exists');
+            $juan->update([
+                'password' => Hash::make('kwatrolangsir444'),
+                'role' => 'staff',
+                'assigned_app' => $juan->assigned_app ?? 'profiling_only',
+                'email_verified_at' => $juan->email_verified_at ?? now(),
+            ]);
+            $this->command->info('✓ Staff account (Juan) password updated');
         }
 
         $this->command->info('✓ Users seeded successfully!');

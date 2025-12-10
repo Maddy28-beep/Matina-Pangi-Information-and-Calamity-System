@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barangay Matina Pangi Information System</title>
+    <title>Barangay Matina Pangi Information and Calamity System</title>
     
     @vite(['resources/css/app-simple.css', 'resources/js/app.js'])
     
@@ -32,7 +32,7 @@
             </h1>
             
             <p class="text-2xl md:text-3xl font-poppins text-gray-700 dark:text-gray-300 mb-4 animate-fade-in" style="animation-delay: 0.4s;">
-                Information System
+                Information and Calamity System
             </p>
 
             <!-- Slogan -->

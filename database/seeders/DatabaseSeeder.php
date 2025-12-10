@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->command->info('');
         $this->command->info('╔════════════════════════════════════════════════════════╗');
-        $this->command->info('║   BARANGAY MATINA PANGI INFORMATION SYSTEM SEEDER    ║');
+        $this->command->info('║ BARANGAY MATINA PANGI INFORMATION AND CALAMITY SYSTEM SEEDER ║');
         $this->command->info('╚════════════════════════════════════════════════════════╝');
         $this->command->info('');
 
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             try {
                 $this->call([\Database\Seeders\CleanSampleDataSeeder::class]);
             } catch (\Throwable $e) {
-                $this->command->warn('⚠ CleanSampleDataSeeder failed: '.$e->getMessage());
+                $this->command->warn('⚠ CleanSampleDataSeeder failed: ' . $e->getMessage());
                 if (class_exists(\Database\Seeders\SimpleSampleDataSeeder::class)) {
                     $this->command->info('➡ Falling back to SimpleSampleDataSeeder...');
                     $this->call([\Database\Seeders\SimpleSampleDataSeeder::class]);
@@ -60,19 +60,26 @@ class DatabaseSeeder extends Seeder
             $this->call([\Database\Seeders\SimpleSampleDataSeeder::class]);
         }
 
+        if (class_exists(\Database\Seeders\EvacuationCenterSeeder::class)) {
+            $this->call([\Database\Seeders\EvacuationCenterSeeder::class]);
+        }
+        if (class_exists(\Database\Seeders\ReliefDistributionSeeder::class)) {
+            $this->call([\Database\Seeders\ReliefDistributionSeeder::class]);
+        }
+
         $this->command->info('');
         $this->command->info('╔════════════════════════════════════════════════════════╗');
         $this->command->info('║    PUROKS CREATED - READY FOR PROFILING & CALAMITY   ║');
         $this->command->info('╚════════════════════════════════════════════════════════╝');
         $this->command->info('');
         $this->command->info('📊 DATABASE SUMMARY:');
-        $this->command->info('   • Users: '.\App\Models\User::count());
-        $this->command->info('   • Puroks: '.\App\Models\Purok::count());
-        $this->command->info('   • Households: '.\App\Models\Household::count());
-        $this->command->info('   • Sub-Families: '.\App\Models\SubFamily::count());
-        $this->command->info('   • Residents: '.\App\Models\Resident::count());
-        $this->command->info('   • Calamities: '.(class_exists('App\\Models\\Calamity') ? \App\Models\Calamity::count() : 0));
-        $this->command->info('   • Certificates: '.(class_exists('App\\Models\\Certificate') ? \App\Models\Certificate::count() : 0));
+        $this->command->info('   • Users: ' . \App\Models\User::count());
+        $this->command->info('   • Puroks: ' . \App\Models\Purok::count());
+        $this->command->info('   • Households: ' . \App\Models\Household::count());
+        $this->command->info('   • Sub-Families: ' . \App\Models\SubFamily::count());
+        $this->command->info('   • Residents: ' . \App\Models\Resident::count());
+        $this->command->info('   • Calamities: ' . (class_exists('App\\Models\\Calamity') ? \App\Models\Calamity::count() : 0));
+        $this->command->info('   • Certificates: ' . (class_exists('App\\Models\\Certificate') ? \App\Models\Certificate::count() : 0));
         $this->command->info('');
         $this->command->info('🎯 NEXT STEPS:');
         $this->command->info('   1. Use the 10 puroks for resident addresses');
@@ -81,9 +88,10 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('');
         $this->command->info('🔐 LOGIN CREDENTIALS:');
-        $this->command->info('   Secretary: secretary@pangi.gov / password');
-        $this->command->info('   Staff 1: maria.santos@pangi.gov / password');
-        $this->command->info('   Staff 2: juan.delacruz@pangi.gov / password');
+        $this->command->info('   Secretary: secretary@pangi.gov / kwatrolangsir444');
+        $this->command->info('   Calamity Head: calamityhead@pangi.gov / kwatrolangsir444');
+        $this->command->info('   Staff 1: maria.santos@pangi.gov / kwatrolangsir444');
+        $this->command->info('   Staff 2: juan.delacruz@pangi.gov / kwatrolangsir444');
         $this->command->info('');
         $this->command->info('🚀 You can now test the system at: http://127.0.0.1:8000');
         $this->command->info('');
