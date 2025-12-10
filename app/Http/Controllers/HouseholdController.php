@@ -219,10 +219,7 @@ class HouseholdController extends Controller
             'members.*.remarks' => 'nullable|string',
         ]);
         $headDuplicate = Resident::query()
-            ->whereRaw('LOWER(first_name) = ?', [strtolower(trim($validated['head']['first_name']))])
-            ->whereRaw('LOWER(last_name) = ?', [strtolower(trim($validated['head']['last_name']))])
-            ->whereRaw('LOWER(COALESCE(middle_name, "")) = ?', [strtolower(trim($validated['head']['middle_name'] ?? ''))])
-            ->whereRaw('LOWER(COALESCE(suffix, "")) = ?', [strtolower(trim($validated['head']['suffix'] ?? ''))])
+            ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [strtolower(trim($validated['head']['first_name']).' '.trim($validated['head']['last_name']))])
             ->exists();
 
         if ($headDuplicate) {
@@ -235,10 +232,7 @@ class HouseholdController extends Controller
         if (isset($validated['members']) && count($validated['members']) > 0) {
             foreach ($validated['members'] as $member) {
                 $memberExists = Resident::query()
-                    ->whereRaw('LOWER(first_name) = ?', [strtolower(trim($member['first_name']))])
-                    ->whereRaw('LOWER(last_name) = ?', [strtolower(trim($member['last_name']))])
-                    ->whereRaw('LOWER(COALESCE(middle_name, "")) = ?', [strtolower(trim($member['middle_name'] ?? ''))])
-                    ->whereRaw('LOWER(COALESCE(suffix, "")) = ?', [strtolower(trim($member['suffix'] ?? ''))])
+                    ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [strtolower(trim($member['first_name']).' '.trim($member['last_name']))])
                     ->exists();
 
                 if ($memberExists) {
@@ -683,10 +677,7 @@ class HouseholdController extends Controller
         ]);
 
         $duplicate = Resident::query()
-            ->whereRaw('LOWER(first_name) = ?', [strtolower(trim($validated['first_name']))])
-            ->whereRaw('LOWER(last_name) = ?', [strtolower(trim($validated['last_name']))])
-            ->whereRaw('LOWER(COALESCE(middle_name, "")) = ?', [strtolower(trim($validated['middle_name'] ?? ''))])
-            ->whereRaw('LOWER(COALESCE(suffix, "")) = ?', [strtolower(trim($validated['suffix'] ?? ''))])
+            ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [strtolower(trim($validated['first_name']).' '.trim($validated['last_name']))])
             ->exists();
 
         if ($duplicate) {

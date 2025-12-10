@@ -227,6 +227,40 @@ class ResidentController extends Controller
     }
 
     /**
+     * Check duplicate resident by full name (first + last), case-insensitive and trimmed
+     */
+    public function checkDuplicateName(Request $request)
+    {
+        if (! auth()->check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $first = trim((string) $request->input('first_name', ''));
+        $last = trim((string) $request->input('last_name', ''));
+
+        if ($first === '' || $last === '') {
+            return response()->json(['exists' => false]);
+        }
+
+        $normalized = strtolower($first.' '.$last);
+        $match = Resident::query()
+            ->whereRaw('LOWER(CONCAT(TRIM(first_name), " ", TRIM(last_name))) = ?', [$normalized])
+            ->first();
+
+        if ($match) {
+            return response()->json([
+                'exists' => true,
+                'id' => $match->id,
+                'resident_id' => $match->resident_id,
+                'full_name' => $match->first_name.' '.($match->middle_name ? $match->middle_name.' ' : '').$match->last_name,
+                'url' => route('residents.show', $match->id),
+            ]);
+        }
+
+        return response()->json(['exists' => false]);
+    }
+
+    /**
      * Show the form for editing the specified resident
      */
     public function edit(Resident $resident)

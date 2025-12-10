@@ -283,6 +283,10 @@ Route::middleware(['auth', 'user_access'])->group(function () {
         ]);
     })->name('global-search');
 
+    // Duplicate resident name check (first + last), case-insensitive and trimmed
+    Route::get('/api/residents/check-duplicate-name', [ResidentController::class, 'checkDuplicateName'])
+        ->name('residents.check-duplicate');
+
     // Global Archive Routes
     Route::get('/archives', [ArchiveController::class, 'index'])->name('archives.index');
     Route::get('/archives/{archive}', [ArchiveController::class, 'show'])->name('archives.show');

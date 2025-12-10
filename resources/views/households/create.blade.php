@@ -489,6 +489,57 @@ $(document).ready(function() {
     addressSelect.addEventListener('change', updatePurokField);
     // Set on page load if address is pre-selected
     updatePurokField();
+
+    // Duplicate name check (real-time) for household head and dynamic members
+    const dupCheckUrl = '{{ route('residents.check-duplicate') }}';
+    const submitBtn = document.querySelector('#householdForm button[type="submit"]');
+    let hasDup = false;
+    function debounce(fn, delay){ let t; return function(){ const args=arguments; const ctx=this; clearTimeout(t); t=setTimeout(function(){ fn.apply(ctx,args); }, delay||300); }; }
+    function renderError(el, msg, url){
+        let box = el.parentElement.querySelector('.dup-error');
+        if(!box){ box = document.createElement('div'); box.className = 'dup-error alert alert-danger mt-2 p-2'; el.parentElement.appendChild(box); }
+        box.innerHTML = msg + (url ? ` <a href="${url}" target="_blank" class="btn btn-sm btn-outline-danger ms-2">View record</a>` : '');
+        box.style.display = 'block';
+    }
+    function clearError(el){ const box = el.parentElement.querySelector('.dup-error'); if(box){ box.style.display='none'; box.innerHTML=''; } }
+    function checkName(first, last){
+        first = (first||'').trim(); last = (last||'').trim();
+        if(!first || !last){ return Promise.resolve({exists:false}); }
+        const url = dupCheckUrl + `?first_name=${encodeURIComponent(first)}&last_name=${encodeURIComponent(last)}`;
+        return fetch(url, { headers: { 'Accept':'application/json' } }).then(r => r.json()).catch(() => ({exists:false}));
+    }
+    function updateSubmitDisabled(){ submitBtn && (submitBtn.disabled = !!hasDup); }
+
+    // Head fields
+    const headFirst = document.getElementById('head_first_name');
+    const headLast = document.getElementById('head_last_name');
+    function headHandler(){ checkName(headFirst.value, headLast.value).then(res => {
+        if(res && res.exists){
+            hasDup = true; updateSubmitDisabled();
+            renderError(headLast, `Resident '${headFirst.value.trim()} ${headLast.value.trim()}' already exists in the system`, res.url);
+        } else {
+            hasDup = false; updateSubmitDisabled(); clearError(headLast);
+        }
+    }); }
+    if(headFirst && headLast){ headFirst.addEventListener('input', debounce(headHandler, 400)); headLast.addEventListener('input', debounce(headHandler, 400)); }
+
+    // Dynamic member fields
+    function attachMemberDupCheck(card){
+        const first = card.querySelector('input[name^="members"][name$="[first_name]"]');
+        const last = card.querySelector('input[name^="members"][name$="[last_name]"]');
+        if(!first || !last) return;
+        const handler = debounce(function(){ checkName(first.value, last.value).then(res => {
+            if(res && res.exists){ hasDup = true; updateSubmitDisabled(); renderError(last, `Resident '${first.value.trim()} ${last.value.trim()}' already exists in the system`, res.url); }
+            else { hasDup = false; updateSubmitDisabled(); clearError(last); }
+        }); }, 400);
+        first.addEventListener('input', handler); last.addEventListener('input', handler);
+    }
+    // Attach for existing members
+    document.querySelectorAll('#membersContainer .card').forEach(attachMemberDupCheck);
+    // Attach after new member forms are added
+    const membersContainer = document.getElementById('membersContainer');
+    const observer = new MutationObserver(function(muts){ muts.forEach(function(m){ m.addedNodes.forEach(function(n){ if(n.nodeType===1 && n.classList.contains('card')) attachMemberDupCheck(n); }); }); });
+    observer.observe(membersContainer, { childList: true });
 });
 </script>
 @endpush
