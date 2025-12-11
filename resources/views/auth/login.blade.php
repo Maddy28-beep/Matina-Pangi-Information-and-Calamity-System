@@ -312,7 +312,7 @@
                 <div class="mb-4 form-check">
                     <input type="checkbox" class="form-check-input" id="remember" name="remember">
                     <label class="form-check-label" for="remember">
-                        <i class="bi bi-check-circle me-1"></i> Remember me for 30 days
+                        <i class="bi bi-check-circle me-1"></i> Stay signed in
                     </label>
                 </div>
                 
@@ -320,12 +320,7 @@
                     <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Dashboard
                 </button>
                 
-                <div class="text-center mt-3">
-                    <small class="text-muted">
-                        <i class="bi bi-shield-check me-1"></i>
-                        Secure login protected by SSL encryption
-                    </small>
-                </div>
+                
             </form>
             
             <div class="mt-4 text-center">

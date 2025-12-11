@@ -96,7 +96,7 @@
     <div class="card-body">
       @if($calamities->count())
       <div class="table-responsive">
-        <table class="table table-striped ds-table sortable-table" role="grid" aria-label="Calamity Reports">
+        <table class="table table-striped ds-table sortable-table table-clickable" role="grid" aria-label="Calamity Reports">
           <thead>
             <tr>
               <th scope="col" role="columnheader" aria-sort="none">{{ __('ID') }}</th>
@@ -109,7 +109,7 @@
           </thead>
           <tbody>
             @foreach($calamities as $c)
-            <tr>
+            <tr data-href="{{ route('web.calamity-reports.show', $c) }}">
               <td>{{ $c->id }}</td>
               <td>{{ $c->calamity_name ?? ucfirst($c->calamity_type) }}</td>
               <td>{{ ucfirst($c->calamity_type) }}</td>
@@ -127,9 +127,6 @@
               </td>
               <td class="text-center">
                 <div class="btn-group" role="group">
-                  <a href="{{ route('web.calamity-reports.show', $c) }}" class="btn btn-sm btn-primary" title="View Report">
-                    <i class="bi bi-eye"></i> View
-                  </a>
                   <a href="{{ route('web.calamity-reports.pdf', $c) }}" class="btn btn-sm btn-success" title="Download PDF" target="_blank">
                     <i class="bi bi-file-pdf"></i> PDF
                   </a>

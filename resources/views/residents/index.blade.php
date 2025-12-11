@@ -105,7 +105,7 @@
     @endphp
 
     <x-search-filter
-        :route="route('residents.index')"
+        :route="auth()->user()->isSecretary() ? route('residents.index') : route('staff.residents.index')"
         title="Filter Residents"
         icon="bi-people"
         :fields="$residentSearchFields"
@@ -153,9 +153,9 @@
                             @endphp
                             <tr
                                 class="clickable-row"
-                                data-href="{{ route('residents.show', $resident) }}"
+                                data-href="{{ auth()->user()->isSecretary() ? route('residents.show', $resident) : route('staff.residents.show', $resident) }}"
                                 data-search-text="{{ $searchText }}"
-                                onclick="window.location.href='{{ route('residents.show', $resident) }}'"
+                                onclick="window.location.href='{{ auth()->user()->isSecretary() ? route('residents.show', $resident) : route('staff.residents.show', $resident) }}'"
                                 title="Click to view resident details"
                             >
                                 <td data-label="Resident ID">

@@ -3,6 +3,30 @@
 @section('title', 'Relief Distribution')
 
 @section('content')<div class="ds-page">
+@php
+  $itemsList = \App\Models\ReliefItem::orderBy('name')->get();
+  $distQuery = \App\Models\ReliefDistribution::with(['calamity','household','item','staff']);
+  if (request('search')) {
+    $s = request('search');
+    $distQuery->where(function($q) use ($s){
+      $q->whereHas('household', function($h) use ($s){
+            $h->where('household_id','like',"%$s%");
+        })
+        ->orWhereHas('item', function($i) use ($s){
+            $i->where('name','like',"%$s%");
+        });
+    });
+  }
+  if (request('date')) {
+    $distQuery->whereDate('distributed_at', request('date'));
+  }
+  if (request('item')) {
+    $distQuery->whereHas('item', function($i){
+        $i->where('id', request('item'));
+    });
+  }
+  $distributions = $distQuery->latest('distributed_at')->paginate(15)->appends(request()->query());
+@endphp
 @push('styles')
 <style>
   .filter-inline .form-control, .filter-inline .form-select { min-height: 44px; border-radius: 12px; }
@@ -44,6 +68,10 @@
       <div>
         <label class="form-label small fw-semibold text-uppercase">Item</label>
         <select name="item" class="form-select">
+          <option value="">All</option>
+          @foreach($itemsList as $it)
+            <option value="{{ $it->id }}" {{ request('item')==$it->id?'selected':'' }}>{{ $it->name }}</option>
+          @endforeach
         </select>
       </div>
       <div class="actions d-flex gap-2" style="justify-self:end">

@@ -99,7 +99,7 @@
     @endphp
 
     <x-search-filter
-        :route="route('households.index')"
+        :route="auth()->user()->isSecretary() ? route('households.index') : route('staff.households.index')"
         title="Filter Households"
         icon="bi-house-fill"
         :fields="$householdSearchFields"
@@ -140,7 +140,7 @@
                             @endphp
                             <tr
                                 class="clickable-row"
-                                data-href="{{ route('households.show', $household) }}"
+                                data-href="{{ auth()->user()->isSecretary() ? route('households.show', $household) : route('staff.households.show', $household) }}"
                                 data-search-text="{{ $searchText }}"
                                 title="Click to view household details"
                             >

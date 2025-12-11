@@ -3,6 +3,23 @@
 @section('title', 'Evacuation Centers')
 
 @section('content')<div class="ds-page">
+@php
+  $centerQuery = \App\Models\EvacuationCenter::query();
+  if (request('search')) {
+    $s = request('search');
+    $centerQuery->where(function($q) use ($s){
+      $q->where('name','like',"%$s%")
+        ->orWhere('location','like',"%$s%");
+    });
+  }
+  if (request('capacity_min')) {
+    $centerQuery->where('capacity','>=', (int) request('capacity_min'));
+  }
+  if (request('occupancy_max')) {
+    $centerQuery->where('current_occupancy','<=', (int) request('occupancy_max'));
+  }
+  $centers = $centerQuery->latest()->paginate(15)->appends(request()->query());
+@endphp
 @push('styles')
 <style>
   .filter-inline .form-control, .filter-inline .form-select { min-height: 44px; border-radius: 12px; }

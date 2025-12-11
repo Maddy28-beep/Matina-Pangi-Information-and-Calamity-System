@@ -218,7 +218,9 @@ Route::middleware(['auth', 'user_access'])->group(function () {
 
     // Read-only Purok access for authenticated users (including Staff) via default path
     Route::get('/puroks', [PurokController::class, 'index'])->name('puroks.index');
-    Route::get('/puroks/{purok}', [PurokController::class, 'show'])->name('puroks.show');
+    Route::get('/puroks/{purok}', [PurokController::class, 'show'])
+        ->whereNumber('purok')
+        ->name('puroks.show');
 
     Route::get('/staff/resident-transfers', [ResidentTransferController::class, 'index'])->name('staff.resident-transfers.index');
     Route::get('/staff/resident-transfers/create', [ResidentTransferController::class, 'create'])->name('staff.resident-transfers.create');

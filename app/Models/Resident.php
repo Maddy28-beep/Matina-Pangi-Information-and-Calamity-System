@@ -126,14 +126,28 @@ class Resident extends Model
     }
 
     /**
-     * Generate unique resident ID (RES-xxxx)
+     * Generate unique resident ID (RES-YYYY-xxxx)
      */
     public static function generateResidentId(): string
     {
-        $lastResident = self::withTrashed()->orderBy('id', 'desc')->first();
-        $number = $lastResident ? intval(substr($lastResident->resident_id, 4)) + 1 : 1;
+        $year = date('Y');
+        $lastResident = self::withTrashed()
+            ->where('resident_id', 'like', 'RES-' . $year . '-%')
+            ->orderBy('id', 'desc')
+            ->first();
 
-        return 'RES-'.str_pad($number, 4, '0', STR_PAD_LEFT);
+        $number = 0;
+        if ($lastResident && is_string($lastResident->resident_id)) {
+            if (preg_match('/^RES-' . $year . '-(\d+)$/', $lastResident->resident_id, $m)) {
+                $number = intval($m[1]);
+            } else {
+                if (preg_match('/(\d+)$/', $lastResident->resident_id, $m2)) {
+                    $number = intval($m2[1]);
+                }
+            }
+        }
+
+        return 'RES-' . $year . '-' . str_pad($number + 1, 4, '0', STR_PAD_LEFT);
     }
 
     /**
@@ -175,7 +189,7 @@ class Resident extends Model
     {
         $name = "{$this->first_name} ";
         if ($this->middle_name) {
-            $name .= substr($this->middle_name, 0, 1).'. ';
+            $name .= substr($this->middle_name, 0, 1) . '. ';
         }
         $name .= $this->last_name;
         if ($this->suffix) {
@@ -416,7 +430,7 @@ class Resident extends Model
      */
     public function getCurrentAgeAttribute()
     {
-        if (! $this->birthdate) {
+        if (!$this->birthdate) {
             return null;
         }
 
@@ -483,7 +497,7 @@ class Resident extends Model
      */
     public function updateAgeCategories()
     {
-        if (! $this->birthdate) {
+        if (!$this->birthdate) {
             return;
         }
 

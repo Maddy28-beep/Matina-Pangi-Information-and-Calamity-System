@@ -106,7 +106,7 @@
                                     <td>
                                         @if($resident->household)
                                             <a
-                                                href="{{ route('households.show', $resident->household) }}">{{ $resident->household->household_id }}</a>
+                                                href="{{ auth()->user()->isSecretary() ? route('households.show', $resident->household) : route('staff.households.show', $resident->household) }}">{{ $resident->household->household_id }}</a>
                                         @else
                                             <span class="text-muted">N/A</span>
                                         @endif
@@ -217,7 +217,7 @@
                                                     <td>
                                                         @if($transfer->resident)
                                                             <a
-                                                                href="{{ route('residents.show', $transfer->resident) }}">{{ $transfer->resident->full_name }}</a>
+                                                                href="{{ auth()->user()->isSecretary() ? route('residents.show', $transfer->resident) : route('staff.residents.show', $transfer->resident) }}">{{ $transfer->resident->full_name }}</a>
                                                         @else
                                                             <span class="text-muted">N/A</span>
                                                         @endif
