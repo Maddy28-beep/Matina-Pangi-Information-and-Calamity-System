@@ -26,15 +26,14 @@ RUN a2dismod mpm_event && a2enmod mpm_prefork && \
     a2enconf mpm-tune keepalive-tune && \
     echo "LogLevel warn" >> /etc/apache2/apache2.conf
 
-# OPcache
-RUN echo "opcache.enable=1
-opcache.memory_consumption=128
-opcache.max_accelerated_files=10000" > /usr/local/etc/php/conf.d/opcache.ini
+# OPcache (Render-safe)
+RUN printf "opcache.enable=1\nopcache.memory_consumption=128\nopcache.max_accelerated_files=10000\n" \
+    > /usr/local/etc/php/conf.d/opcache.ini
 
 # Copy application
 COPY . /var/www/html
 
-# Create required folders
+# Create required folders with permissions
 RUN mkdir -p /var/www/html/public/uploads \
     /var/www/html/storage/framework/sessions \
     /var/www/html/storage/framework/views \
@@ -52,7 +51,7 @@ WORKDIR /var/www/html
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Laravel deps
+# Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Clear caches
@@ -61,8 +60,8 @@ RUN php artisan config:clear \
  && php artisan route:clear \
  && php artisan view:clear
 
-# Render default port is 10000, but you can expose anything
+# Render uses dynamic ports; EXPOSE is optional
 EXPOSE 1000
 
-# Start Server
+# Start Apache
 CMD ["apache2-foreground"]
