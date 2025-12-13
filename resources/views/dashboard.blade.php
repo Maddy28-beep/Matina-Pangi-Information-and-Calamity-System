@@ -138,6 +138,25 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .alert-approvals {
+            background-color: #dbeafe !important;
+            border-color: #bfdbfe !important;
+            color: #1e40af !important;
+        }
+
+        .btn-approvals {
+            background-color: #3b82f6 !important;
+            border-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+
+        .btn-approvals:hover,
+        .btn-approvals:focus {
+            background-color: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #ffffff !important;
+        }
     </style>
 @endpush
 
@@ -150,11 +169,16 @@
                 <p class="text-muted mb-0">Quick snapshot of barangay records.</p>
             </div>
             @if(auth()->user()->isSecretary())
-                @php $pendingApprovals = (\App\Models\Resident::pending()->count()) + (\App\Models\Household::pending()->count()); @endphp
+                @php
+                    $pendingApprovals = (\App\Models\Resident::pending()->count())
+                        + (\App\Models\Household::pending()->count())
+                        + (\App\Models\ResidentTransfer::pending()->count())
+                        + (\App\Models\CertificateRequest::where('status', 'pending')->count());
+                @endphp
                 @if($pendingApprovals > 0)
-                    <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                    <div class="alert alert-approvals d-flex justify-content-between align-items-center">
                         <div><i class="bi bi-clock-history"></i> Pending approvals: <strong>{{ $pendingApprovals }}</strong></div>
-                        <a href="{{ route('approvals.index') }}" class="btn btn-sm btn-warning"><i class="bi bi-arrow-right"></i>
+                        <a href="{{ route('approvals.index') }}" class="btn btn-sm btn-approvals"><i class="bi bi-arrow-right"></i>
                             Open Approvals</a>
                     </div>
                 @endif
@@ -391,7 +415,7 @@
                         labels: ['Male', 'Female'],
                         datasets: [{
                             data: [
-                            {{ (int) ($stats['male_count'] ?? 0) }},
+                                {{ (int) ($stats['male_count'] ?? 0) }},
                                 {{ (int) ($stats['female_count'] ?? 0) }}
                             ],
                             backgroundColor: [primary, '#93C5FD'],
@@ -414,9 +438,9 @@
                         datasets: [{
                             label: 'Count',
                             data: [
-                            {{ (int) ($ageDistribution['children'] ?? 0) }},
-                            {{ (int) ($ageDistribution['teens'] ?? 0) }},
-                            {{ (int) ($ageDistribution['adults'] ?? 0) }},
+                                {{ (int) ($ageDistribution['children'] ?? 0) }},
+                                {{ (int) ($ageDistribution['teens'] ?? 0) }},
+                                {{ (int) ($ageDistribution['adults'] ?? 0) }},
                                 {{ (int) ($ageDistribution['seniors'] ?? 0) }}
                             ],
                             backgroundColor: primary,

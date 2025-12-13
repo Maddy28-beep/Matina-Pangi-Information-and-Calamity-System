@@ -312,11 +312,10 @@
         }
 
         .toast-success .toast-header {
-            background-color: #dcfce7 !important;
-            /* light green */
+            background: #dcfce7 !important;
+            background-image: none !important;
             border-bottom: none !important;
             color: #047857 !important;
-            /* dark green text */
             font-weight: 600 !important;
             padding: 1rem 1rem 0.5rem 1rem !important;
         }

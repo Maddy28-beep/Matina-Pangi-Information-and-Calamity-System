@@ -100,14 +100,14 @@
 
     <?php if (isset($component)) { $__componentOriginal33e4867731ced0462908f8cc78d5ea1b = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal33e4867731ced0462908f8cc78d5ea1b = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.search-filter','data' => ['route' => route('households.index'),'title' => 'Filter Households','icon' => 'bi-house-fill','fields' => $householdSearchFields,'advanced' => false,'inline' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.search-filter','data' => ['route' => auth()->user()->isSecretary() ? route('households.index') : route('staff.households.index'),'title' => 'Filter Households','icon' => 'bi-house-fill','fields' => $householdSearchFields,'advanced' => false,'inline' => true]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? (array) $attributes->getIterator() : [])); ?>
 <?php $component->withName('search-filter'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag && $constructor = (new ReflectionClass(Illuminate\View\AnonymousComponent::class))->getConstructor()): ?>
 <?php $attributes = $attributes->except(collect($constructor->getParameters())->map->getName()->all()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['route' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(route('households.index')),'title' => 'Filter Households','icon' => 'bi-house-fill','fields' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($householdSearchFields),'advanced' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(false),'inline' => true]); ?>
+<?php $component->withAttributes(['route' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(auth()->user()->isSecretary() ? route('households.index') : route('staff.households.index')),'title' => 'Filter Households','icon' => 'bi-house-fill','fields' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($householdSearchFields),'advanced' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(false),'inline' => true]); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal33e4867731ced0462908f8cc78d5ea1b)): ?>
@@ -153,7 +153,7 @@
                             ?>
                             <tr
                                 class="clickable-row"
-                                data-href="<?php echo e(route('households.show', $household)); ?>"
+                                data-href="<?php echo e(auth()->user()->isSecretary() ? route('households.show', $household) : route('staff.households.show', $household)); ?>"
                                 data-search-text="<?php echo e($searchText); ?>"
                                 title="Click to view household details"
                             >

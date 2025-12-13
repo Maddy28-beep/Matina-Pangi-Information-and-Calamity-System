@@ -165,6 +165,65 @@ class AnnouncementController extends Controller
         return view('announcements.show', compact('announcement'));
     }
 
+    public function edit(Announcement $announcement)
+    {
+        $puroks = \App\Models\Purok::orderBy('purok_name')->get();
+        $households = \App\Models\Household::approved()->with('officialHead')->orderBy('household_id')->get();
+
+        return view('announcements.edit', compact('announcement', 'puroks', 'households'));
+    }
+
+    public function update(Request $request, Announcement $announcement)
+    {
+        $data = $request->validate([
+            'title' => 'sometimes|required|string|max:255',
+            'message' => 'sometimes|required|string',
+            'urgency' => 'nullable|string|max:50',
+            'target_purok' => 'nullable|string',
+            'age_range.min' => 'nullable|integer|min:0',
+            'age_range.max' => 'nullable|integer|min:0',
+            'households' => 'nullable|array',
+            'households.*' => 'integer',
+            'only_affected' => 'nullable|boolean',
+            'only_evacuees' => 'nullable|boolean',
+            'send_sms' => 'nullable|boolean',
+            'send_email' => 'nullable|boolean',
+            'status' => 'nullable|in:draft,sent',
+        ]);
+
+        $filters = [
+            'target_purok' => $request->target_purok,
+            'age_range' => $request->age_range,
+            'households' => $request->households,
+            'only_affected' => (bool) $request->only_affected,
+            'only_evacuees' => (bool) $request->only_evacuees,
+        ];
+
+        $announcement->update([
+            'title' => $data['title'] ?? $announcement->title,
+            'message' => $data['message'] ?? $announcement->message,
+            'urgency' => $data['urgency'] ?? $announcement->urgency,
+            'filters' => $filters,
+            'send_sms' => (bool) ($data['send_sms'] ?? $announcement->send_sms),
+            'send_email' => (bool) ($data['send_email'] ?? $announcement->send_email),
+            'status' => $data['status'] ?? $announcement->status,
+        ]);
+
+        return redirect()->route('announcements.show', $announcement)
+            ->with('success', 'Announcement updated successfully');
+    }
+
+    public function destroy(Announcement $announcement)
+    {
+        DB::transaction(function () use ($announcement) {
+            $announcement->recipients()->delete();
+            $announcement->delete();
+        });
+
+        return redirect()->route('announcements.index')
+            ->with('success', 'Announcement deleted successfully');
+    }
+
     public function bell()
     {
         $anQuery = Announcement::where('status', 'sent')

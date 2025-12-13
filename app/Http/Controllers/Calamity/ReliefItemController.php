@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Calamity;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Calamity\ReliefItemResource;
 use App\Models\ReliefItem;
+use App\Models\AuditLog;
 use Illuminate\Http\Request;
 
 class ReliefItemController extends Controller
@@ -93,5 +94,26 @@ class ReliefItemController extends Controller
     public function edit(ReliefItem $relief_item)
     {
         return view('calamity.relief_items.edit', compact('relief_item'));
+    }
+
+    public function movements(Request $request)
+    {
+        $items = ReliefItem::orderBy('name')->get();
+        $query = AuditLog::where('model_type', 'ReliefItem')->latest();
+        if ($request->filled('item')) {
+            $query->where('model_id', $request->input('item'));
+        }
+        if ($request->filled('action')) {
+            $query->where('action', $request->input('action'));
+        }
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->input('from'));
+        }
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->input('to'));
+        }
+        $logs = $query->paginate(20)->appends($request->query());
+
+        return view('calamity.relief_items.movements', compact('items', 'logs'));
     }
 }

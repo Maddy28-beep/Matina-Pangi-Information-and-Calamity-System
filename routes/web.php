@@ -55,7 +55,7 @@ Route::middleware(['auth', 'user_access'])->group(function () {
         ->name('staff.households.show');
     // Staff: My Submissions
     Route::get('/staff/my-submissions', function (\Illuminate\Http\Request $request) {
-        if (! auth()->user()->isStaff()) {
+        if (!auth()->user()->isStaff()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -122,7 +122,7 @@ Route::middleware(['auth', 'user_access'])->group(function () {
 
     // Export CSV for My Submissions
     Route::get('/staff/my-submissions/export', function (\Illuminate\Http\Request $request) {
-        if (! auth()->user()->isStaff()) {
+        if (!auth()->user()->isStaff()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -131,7 +131,7 @@ Route::middleware(['auth', 'user_access'])->group(function () {
         $from = $request->date('from');
         $to = $request->date('to');
 
-        $filename = "my_submissions_{$section}_".now()->format('Ymd_His').'.csv';
+        $filename = "my_submissions_{$section}_" . now()->format('Ymd_His') . '.csv';
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",
@@ -230,13 +230,13 @@ Route::middleware(['auth', 'user_access'])->group(function () {
     // Unified Dashboard (Secretary and Staff)
     Route::get('/dashboard', function () {
         $user = auth()->user();
-        if (! $user) {
+        if (!$user) {
             return redirect()->route('login');
         }
         if ($user->role === 'calamity_head') {
             return redirect()->route('calamities.dashboard');
         }
-        if (! in_array($user->role, ['secretary', 'staff'])) {
+        if (!in_array($user->role, ['secretary', 'staff'])) {
             abort(403, 'This action is unauthorized.');
         }
 
@@ -267,7 +267,7 @@ Route::middleware(['auth', 'user_access'])->group(function () {
             'residents' => $residents->map(function ($r) {
                 return [
                     'id' => $r->id,
-                    'full_name' => $r->first_name.' '.($r->middle_name ? $r->middle_name.' ' : '').$r->last_name,
+                    'full_name' => $r->first_name . ' ' . ($r->middle_name ? $r->middle_name . ' ' : '') . $r->last_name,
                     'resident_id' => $r->resident_id,
                     'household_id' => $r->household_id,
                     'url' => route('residents.show', $r->id),
@@ -402,7 +402,7 @@ Route::middleware(['auth', 'user_access'])->group(function () {
         Route::post('/puroks/{purok}/update-counts', [PurokController::class, 'updateCounts'])->name('puroks.update-counts');
 
         // Announcements
-        Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class)->only(['index', 'create', 'store', 'show']);
+        Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
         Route::get('/announcements/bell', [\App\Http\Controllers\AnnouncementController::class, 'bell'])->name('announcements.bell');
 
     });
@@ -437,8 +437,11 @@ Route::middleware(['auth', 'user_access'])->group(function () {
             Route::get('/relief-items/create', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'create'])->name('relief-items.create');
             Route::get('/relief-items/{relief_item}', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'show'])->name('relief-items.show');
             Route::get('/relief-items/{relief_item}/edit', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'edit'])->name('relief-items.edit');
+            Route::get('/relief-items/movements', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'movements'])->name('relief-items.movements');
             Route::view('/relief-distributions', 'calamity.distributions.index')->name('relief-distributions.index');
             Route::view('/relief-distributions/create', 'calamity.distributions.create')->name('relief-distributions.create');
+            Route::get('/relief-distributions/{relief_distribution}', [\App\Http\Controllers\Calamity\ReliefDistributionController::class, 'showBlade'])->name('relief-distributions.show');
+            Route::get('/relief-distributions/{relief_distribution}/edit', [\App\Http\Controllers\Calamity\ReliefDistributionController::class, 'editBlade'])->name('relief-distributions.edit');
             Route::get('/damage-assessments', [\App\Http\Controllers\Calamity\DamageAssessmentController::class, 'indexBlade'])->name('damage-assessments.index');
             Route::get('/damage-assessments/create', [\App\Http\Controllers\Calamity\DamageAssessmentController::class, 'createBlade'])->name('damage-assessments.create');
             Route::get('/damage-assessments/{damage_assessment}', [\App\Http\Controllers\Calamity\DamageAssessmentController::class, 'showBlade'])->name('damage-assessments.show');
@@ -475,10 +478,16 @@ Route::middleware(['auth', 'user_access'])->group(function () {
             ->name('web.response-team-members.store');
         Route::post('/relief-items', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'store'])
             ->name('web.relief-items.store');
+        Route::post('/relief-distributions', [\App\Http\Controllers\Calamity\ReliefDistributionController::class, 'storeWeb'])
+            ->name('web.relief-distributions.store');
         Route::put('/relief-items/{relief_item}', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'update'])
             ->name('web.relief-items.update');
         Route::delete('/relief-items/{relief_item}', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'destroy'])
             ->name('web.relief-items.destroy');
+        Route::put('/relief-distributions/{relief_distribution}', [\App\Http\Controllers\Calamity\ReliefDistributionController::class, 'updateWeb'])
+            ->name('web.relief-distributions.update');
+        Route::delete('/relief-distributions/{relief_distribution}', [\App\Http\Controllers\Calamity\ReliefDistributionController::class, 'destroyWeb'])
+            ->name('web.relief-distributions.destroy');
     });
 
     // User Management (Secretary Settings)
