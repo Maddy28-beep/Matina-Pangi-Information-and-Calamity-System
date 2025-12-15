@@ -16,7 +16,7 @@
     <div class="row g-3">
       <div class="col-md-4"><div class="fw-semibold">Item</div><div>{{ $relief_item->name }}</div></div>
       <div class="col-md-4"><div class="fw-semibold">Category</div><div><span class="badge bg-info">{{ ucfirst($relief_item->category) }}</span></div></div>
-      <div class="col-md-4"><div class="fw-semibold">Quantity</div><div><span class="badge bg-success">{{ $relief_item->quantity }}</span></div></div>
+      <div class="col-md-4"><div class="fw-semibold">Quantity</div><div><span class="badge bg-success">{{ $relief_item->quantity }} {{ $relief_item->unit }}</span></div></div>
     </div>
   </div>
 </div>

@@ -13,6 +13,7 @@ class ReliefItem extends Model
     protected $fillable = [
         'name',
         'category',
+        'unit',
         'quantity',
     ];
 }

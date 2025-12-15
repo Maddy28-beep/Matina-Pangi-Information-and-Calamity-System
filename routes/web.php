@@ -437,7 +437,6 @@ Route::middleware(['auth', 'user_access'])->group(function () {
             Route::get('/relief-items/create', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'create'])->name('relief-items.create');
             Route::get('/relief-items/{relief_item}', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'show'])->name('relief-items.show');
             Route::get('/relief-items/{relief_item}/edit', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'edit'])->name('relief-items.edit');
-            Route::get('/relief-items/movements', [\App\Http\Controllers\Calamity\ReliefItemController::class, 'movements'])->name('relief-items.movements');
             Route::view('/relief-distributions', 'calamity.distributions.index')->name('relief-distributions.index');
             Route::view('/relief-distributions/create', 'calamity.distributions.create')->name('relief-distributions.create');
             Route::get('/relief-distributions/{relief_distribution}', [\App\Http\Controllers\Calamity\ReliefDistributionController::class, 'showBlade'])->name('relief-distributions.show');

@@ -17,7 +17,7 @@ class ReliefItemController extends Controller
         }
         $query = ReliefItem::query()->latest();
         if (request('search')) {
-            $s = '%'.trim(request('search')).'%';
+            $s = '%' . trim(request('search')) . '%';
             $query->where(function ($q) use ($s) {
                 $q->where('name', 'like', $s)->orWhere('category', 'like', $s);
             });
@@ -38,6 +38,7 @@ class ReliefItemController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:100',
+            'unit' => 'nullable|string|max:50',
             'quantity' => 'required|integer|min:0',
         ]);
         $item = ReliefItem::create($data);
@@ -63,6 +64,7 @@ class ReliefItemController extends Controller
         $data = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'category' => 'nullable|string|max:100',
+            'unit' => 'nullable|string|max:50',
             'quantity' => 'nullable|integer|min:0',
         ]);
         $relief_item->update($data);
@@ -77,7 +79,7 @@ class ReliefItemController extends Controller
     public function destroy(ReliefItem $relief_item)
     {
         // Use the Archivable trait to archive
-        $relief_item->archive('Archived by '.auth()->user()->name);
+        $relief_item->archive('Archived by ' . auth()->user()->name);
         if (request()->expectsJson()) {
             return response()->json(null, 204);
         }
@@ -96,24 +98,4 @@ class ReliefItemController extends Controller
         return view('calamity.relief_items.edit', compact('relief_item'));
     }
 
-    public function movements(Request $request)
-    {
-        $items = ReliefItem::orderBy('name')->get();
-        $query = AuditLog::where('model_type', 'ReliefItem')->latest();
-        if ($request->filled('item')) {
-            $query->where('model_id', $request->input('item'));
-        }
-        if ($request->filled('action')) {
-            $query->where('action', $request->input('action'));
-        }
-        if ($request->filled('from')) {
-            $query->whereDate('created_at', '>=', $request->input('from'));
-        }
-        if ($request->filled('to')) {
-            $query->whereDate('created_at', '<=', $request->input('to'));
-        }
-        $logs = $query->paginate(20)->appends($request->query());
-
-        return view('calamity.relief_items.movements', compact('items', 'logs'));
-    }
 }

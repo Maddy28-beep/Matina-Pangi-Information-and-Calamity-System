@@ -37,7 +37,21 @@
         </div>
         <div class="col-md-6">
           <label class="form-label">Unit</label>
-          <input type="text" name="unit" class="form-control" value="{{ old('unit') }}" placeholder="e.g., pcs, kg, box">
+          @php $u = old('unit'); @endphp
+          <select name="unit" class="form-select">
+            <option value="" {{ $u ? '' : 'selected' }}>Select unit</option>
+            <option value="pcs" {{ $u=='pcs'?'selected':'' }}>pcs</option>
+            <option value="box" {{ $u=='box'?'selected':'' }}>box</option>
+            <option value="pack" {{ $u=='pack'?'selected':'' }}>pack</option>
+            <option value="kg" {{ $u=='kg'?'selected':'' }}>kg</option>
+            <option value="g" {{ $u=='g'?'selected':'' }}>g</option>
+            <option value="liter" {{ $u=='liter'?'selected':'' }}>liter</option>
+            <option value="ml" {{ $u=='ml'?'selected':'' }}>ml</option>
+            <option value="bottle" {{ $u=='bottle'?'selected':'' }}>bottle</option>
+            <option value="can" {{ $u=='can'?'selected':'' }}>can</option>
+            <option value="sack" {{ $u=='sack'?'selected':'' }}>sack</option>
+            <option value="bundle" {{ $u=='bundle'?'selected':'' }}>bundle</option>
+          </select>
         </div>
       </div>
       <div class="mt-4 d-flex justify-content-end gap-2">
