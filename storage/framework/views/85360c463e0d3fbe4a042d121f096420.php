@@ -138,6 +138,56 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .alert-approvals {
+            background-color: #dbeafe !important;
+            border-color: #bfdbfe !important;
+            color: #1e40af !important;
+        }
+
+        .btn-approvals {
+            background-color: #3b82f6 !important;
+            border-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+
+        .btn-approvals:hover,
+        .btn-approvals:focus {
+            background-color: #2563eb !important;
+            border-color: #2563eb !important;
+            color: #ffffff !important;
+        }
+
+        .quick-actions-sticky {
+            position: sticky;
+            top: calc(var(--navbar-height, 64px) + 16px);
+            z-index: 10;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+        .quick-actions-sticky .qa-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            color: #0ea5e9;
+            font-weight: 600;
+        }
+        .quick-actions-sticky .qa-scroll {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 3px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .quick-actions-sticky .qa-scroll .btn {
+            white-space: nowrap;
+            padding: 0.375rem 0.75rem !important;
+        }
     </style>
 <?php $__env->stopPush(); ?>
 
@@ -157,15 +207,42 @@
                         + (\App\Models\CertificateRequest::where('status', 'pending')->count());
                 ?>
                 <?php if($pendingApprovals > 0): ?>
-                    <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                    <div class="alert alert-approvals d-flex justify-content-between align-items-center">
                         <div><i class="bi bi-clock-history"></i> Pending approvals: <strong><?php echo e($pendingApprovals); ?></strong></div>
-                        <a href="<?php echo e(route('approvals.index')); ?>" class="btn btn-sm btn-warning"><i class="bi bi-arrow-right"></i>
+                        <a href="<?php echo e(route('approvals.index')); ?>" class="btn btn-sm btn-approvals"><i class="bi bi-arrow-right"></i>
                             Open Approvals</a>
                     </div>
                 <?php endif; ?>
             <?php endif; ?>
 
 
+            <div class="quick-actions-sticky">
+                <div class="qa-header"><i class="bi bi-lightning"></i> Quick Actions</div>
+                <div class="qa-scroll">
+                    <?php if(auth()->user()->isSecretary()): ?>
+                        <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('households.create')); ?>">Register Household</a>
+                        <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('households.index')); ?>">Add Resident</a>
+                        <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('certificates.create')); ?>">Issue
+                            Certificate</a>
+                        <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('census.index')); ?>">View Census</a>
+                        <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('settings.users.index')); ?>">Manage Users</a>
+                    <?php else: ?>
+                        <?php if(auth()->user()->isStaff()): ?>
+                            <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('staff.households.create')); ?>">Register
+                                Household</a>
+                            <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('staff.residents.index')); ?>">Add Resident</a>
+                            <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('certificates.create')); ?>">Issue
+                                Certificate</a>
+                            <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('census.index')); ?>">View Census</a>
+                            <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('staff.submissions.index')); ?>">My
+                                Submissions</a>
+                        <?php else: ?>
+                            <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('census.index')); ?>">View Census</a>
+                            <a class="btn btn-sm btn-outline-primary" href="<?php echo e(route('residents.index')); ?>">View Residents</a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
 
             <div class="stats-grid">
                 <div>
@@ -270,39 +347,7 @@
 
 
 
-            <div class="card border-0 shadow-sm mb-5">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="mb-0 fw-semibold"><i class="bi bi-lightning me-2 text-info"></i>Quick Actions</h5>
-                </div>
-                <div class="card-body">
-                    <div class="quick-actions-grid">
-                        <?php if(auth()->user()->isSecretary()): ?>
-                            <a class="btn btn-outline-primary w-100" href="<?php echo e(route('households.create')); ?>">Register
-                                Household</a>
-                            <a class="btn btn-outline-primary w-100" href="<?php echo e(route('households.index')); ?>">Add Resident</a>
-                            <a class="btn btn-outline-primary w-100" href="<?php echo e(route('certificates.create')); ?>">Issue
-                                Certificate</a>
-                            <a class="btn btn-outline-primary w-100" href="<?php echo e(route('census.index')); ?>">View Census</a>
-                            <a class="btn btn-outline-primary w-100" href="<?php echo e(route('settings.users.index')); ?>">Manage Users</a>
-                        <?php else: ?>
-                            <?php if(auth()->user()->isStaff()): ?>
-                                <a class="btn btn-outline-primary w-100" href="<?php echo e(route('staff.households.create')); ?>">Register
-                                    Household</a>
-                                <a class="btn btn-outline-primary w-100" href="<?php echo e(route('staff.residents.index')); ?>">Add
-                                    Resident</a>
-                                <a class="btn btn-outline-primary w-100" href="<?php echo e(route('certificates.create')); ?>">Issue
-                                    Certificate</a>
-                                <a class="btn btn-outline-primary w-100" href="<?php echo e(route('census.index')); ?>">View Census</a>
-                                <a class="btn btn-outline-primary w-100" href="<?php echo e(route('staff.submissions.index')); ?>">My
-                                    Submissions</a>
-                            <?php else: ?>
-                                <a class="btn btn-outline-primary w-100" href="<?php echo e(route('census.index')); ?>">View Census</a>
-                                <a class="btn btn-outline-primary w-100" href="<?php echo e(route('residents.index')); ?>">View Residents</a>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
+
 
             <?php if($recentResidents->count() > 0): ?>
                 <div class="card border-0 shadow-sm">
@@ -396,7 +441,7 @@
                         labels: ['Male', 'Female'],
                         datasets: [{
                             data: [
-                            <?php echo e((int) ($stats['male_count'] ?? 0)); ?>,
+                                    <?php echo e((int) ($stats['male_count'] ?? 0)); ?>,
                                 <?php echo e((int) ($stats['female_count'] ?? 0)); ?>
 
                             ],
@@ -420,9 +465,9 @@
                         datasets: [{
                             label: 'Count',
                             data: [
-                            <?php echo e((int) ($ageDistribution['children'] ?? 0)); ?>,
-                            <?php echo e((int) ($ageDistribution['teens'] ?? 0)); ?>,
-                            <?php echo e((int) ($ageDistribution['adults'] ?? 0)); ?>,
+                                    <?php echo e((int) ($ageDistribution['children'] ?? 0)); ?>,
+                                    <?php echo e((int) ($ageDistribution['teens'] ?? 0)); ?>,
+                                    <?php echo e((int) ($ageDistribution['adults'] ?? 0)); ?>,
                                 <?php echo e((int) ($ageDistribution['seniors'] ?? 0)); ?>
 
                             ],
