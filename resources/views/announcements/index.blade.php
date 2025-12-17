@@ -9,10 +9,11 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             border-radius: 0.5rem;
             overflow: hidden;
+            border: 1px solid #E5E7EB;
         }
 
         .live-search-container .form-control {
-            border: 1px solid #E5E7EB;
+            border: none;
             padding: 0.75rem 1rem;
             font-size: 0.9375rem;
             font-weight: 500;
@@ -20,18 +21,15 @@
 
         .live-search-container .form-control:focus {
             box-shadow: none;
-            border-color: #4A6F52;
         }
 
         .live-search-container .input-group-text {
-            border: 1px solid #E5E7EB;
-            border-right: none;
+            border: none;
             padding: 0.75rem 1rem;
         }
 
         .live-search-container .clear-search-btn {
-            border: 1px solid #E5E7EB;
-            border-left: none;
+            border: none;
             background: white !important;
             color: #6B7280 !important;
             padding: 0.5rem 1rem !important;
@@ -236,11 +234,11 @@
     <!-- Live Search Box -->
     <div class="live-search-container mb-4">
         <div class="input-group">
-            <span class="input-group-text bg-white border-end-0">
+            <span class="input-group-text bg-white">
                 <i class="bi bi-search text-muted"></i>
             </span>
-            <input type="text" class="form-control border-start-0 live-search-input"
-                placeholder="🔍 Search announcements by title, urgency, status, date..."
+            <input type="text" class="form-control live-search-input"
+                placeholder="Search announcements by title, urgency, status, date..."
                 data-target-table="#announcementsTableBody" data-empty-state=".search-empty-state"
                 data-result-count=".search-result-count" autocomplete="off">
             <button class="btn btn-outline-secondary clear-search-btn" type="button" title="Clear search">
