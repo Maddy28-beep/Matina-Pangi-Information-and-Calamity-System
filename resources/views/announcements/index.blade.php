@@ -10,27 +10,30 @@
             border-radius: 0.5rem;
             overflow: hidden;
             border: 1px solid #E5E7EB;
+            background-color: #fff;
         }
 
         .live-search-container .form-control {
-            border: none;
+            border: none !important;
             padding: 0.75rem 1rem;
             font-size: 0.9375rem;
             font-weight: 500;
+            box-shadow: none !important;
         }
 
         .live-search-container .form-control:focus {
-            box-shadow: none;
+            box-shadow: none !important;
         }
 
         .live-search-container .input-group-text {
-            border: none;
+            border: none !important;
             padding: 0.75rem 1rem;
+            background-color: transparent !important;
         }
 
         .live-search-container .clear-search-btn {
-            border: none;
-            background: white !important;
+            border: none !important;
+            background: transparent !important;
             color: #6B7280 !important;
             padding: 0.5rem 1rem !important;
         }
@@ -234,14 +237,14 @@
     <!-- Live Search Box -->
     <div class="live-search-container mb-4">
         <div class="input-group">
-            <span class="input-group-text bg-white">
+            <span class="input-group-text">
                 <i class="bi bi-search text-muted"></i>
             </span>
             <input type="text" class="form-control live-search-input"
                 placeholder="Search announcements by title, urgency, status, date..."
                 data-target-table="#announcementsTableBody" data-empty-state=".search-empty-state"
                 data-result-count=".search-result-count" autocomplete="off">
-            <button class="btn btn-outline-secondary clear-search-btn" type="button" title="Clear search">
+            <button class="btn clear-search-btn" type="button" title="Clear search">
                 <i class="bi bi-x-lg"></i>
             </button>
         </div>
